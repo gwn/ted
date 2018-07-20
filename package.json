@@ -1,0 +1,28 @@
+{
+  "name": "ted-editor",
+  "version": "0.1.2",
+  "description": "Lightweight ergonomic interactive command line task editor",
+  "author": "gwn <ege@ege.wtf>",
+  "keywords": [
+    "task",
+    "todo",
+    "ed"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint src/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "ted": "src/ted.js"
+  },
+  "engines": {
+    "node": ">= 8.0.0",
+    "npm": ">= 6.0.0"
+  },
+  "main": "src/ted.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.1.0"
+  }
+}

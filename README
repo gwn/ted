@@ -1,0 +1,134 @@
+## ted
+
+Lightweight ergonomic interactive command line task list editor
+
+[`ed`](http://wiki.c2.com/?EdIsTheStandardTextEditor) for tasks
+
+For the people who appreciate the simplicity of traditional TODO
+files but who also has a lot of tasks and wish they were easily
+taggable sortable filterable without requiring an ugly and bloated
+issue tracker.
+
+Read on to see what's different from existing command line task
+managers.
+
+
+## features & design choices
+
+- `ted` is an editor that works on a given task directory. It has
+  no implicit project database. The "project" IS the directory you
+  supply.
+
+- `ted` supports tag based categorization & filtering and priority
+  based ordering.
+
+- `ted` has no configuration, no command line flags and has only
+  around 10 commands. You can get comfortable with the whole
+  feature set in 15 minutes.
+
+- `ted` stores tasks as regular files in the task directory being
+  edited. The directory and file structures are very simple and
+  VCS-friendly. Diffs will be straightforward if you track your
+  changes.
+
+- `ted` is interactive. Commands are sent from inside the `ted`
+  shell.
+
+- All commands are single letter but intuitive (like c for create,
+  e for edit, etc). You need A LOT less keystrokes to accomplish
+  things compared to many other command line task managers.
+
+- `ted` is similar to the venerable UNIX editor `ed` (which is THE
+  standard editor). This only appeals to UNIX geeks though.
+
+
+## non-features
+
+Things that are intentionally not supported and suggested
+alternatives:
+
+- Attribution & synchronization: Use a VCS on the task directory
+
+- Assignments: Use tags like `@john`, `@jack`
+
+- Statuses: Use tags like `!doing`, `!blocked`
+
+- Attachments: Link to files on the cloud
+
+- Discussions, mentions, merge requests: Use e-mail lists, e-mail,
+  patches on e-mail. E-mail FTW!
+
+
+## usage
+
+    npm install -g ted-editor
+    ted mytodos
+
+
+## commands
+
+**Display:**
+
+    <empty>               List tasks that match the current filter
+    <id>                  Show task #<id>
+    t                     Show tag list
+    f                     Show current filter
+    o                     Show current order
+    l                     Show current limit
+
+**Listing option manipulation:**
+
+    f all <t1> [<t2> ..]  Set filter for all matching tags
+    f any <t1> [<t2> ..]  Set filter for any matching tag
+    f match <regex>       Set filter for given regex
+    F                     Reset filter
+
+    o <col1> [<col2> ..]  Set column(s) to order the list by. Prefix column names with "-" for descending order
+    O                     Reset order
+
+    l <lim>               Set limit
+    L                     Reset limit
+
+**Task manipulation:**
+
+    c                     Create new task with system editor
+    c <title>             Create new task immediately with the given title
+
+    e <id>                Edit task with system editor
+    t <id> <t1> [<t2> ..] Add/remove tags to/from task. Prefix a tag with "-" to remove it.
+    p <id> <pri>          Set task priority
+
+    a <id>                Archive task
+    A <id>                Unarchive task
+
+    d <id>                Delete task completely
+
+**Other:**
+
+    a                     Start working on archived tasks
+    A                     Stop working on archived tasks
+    h                     Help
+    q                     Quit
+    reindex               Update the internal index. Call after manual updates
+
+
+## task file format
+
+    title
+
+    priority tag1 tag2 tag3
+
+    description lorem ipsum dolor
+    sit amet consectetuer adipisicing elit
+
+    some more important stuff
+
+    - a list
+    - in the description
+
+
+## gotchas
+
+- If you update your task files with something other than `ted`;
+  you will need to update the internal index of `ted` when you
+  return to it. Use the `reindex` command for that.
