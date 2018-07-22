@@ -33,7 +33,7 @@ const makeTaskDB = dbroot => {
 }
 
 const checkIfDbDir = dbroot =>
-    dbDirSkeleton.every(file => fs.existsSync(file.path))
+    dbDirSkeleton.every(file => fs.existsSync(path.join(dbroot, file.path)))
 
 const generateSkeleton = dbroot => {
     dbDirSkeleton.forEach(file => {
