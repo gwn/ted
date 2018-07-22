@@ -177,7 +177,7 @@ const c = (ctx, ...words) => {
             { raw: true, archive }
         )
 
-    log('Created', taskId)
+    log(taskId)
 }
 
 const e = (ctx, id) => {
@@ -233,21 +233,9 @@ const d = (ctx, id) => {
 
     const task = taskdb.read(id, { archive })
 
-    const question =
-        `Are you sure you want to delete "${task.title}" (#${task.id}) ?`
-
-    return new Promise(resolve => {
-        rl.question(question + '\nyes/no? ', answer => {
-            if (answer !== 'yes')
-                log('Delete cancelled')
-            else {
-                taskdb.delete(id, { archive })
-                log('Task deleted!')
-            }
-
-            resolve()
-        })
-    })
+    return new Promise(resolve =>
+        rl.question(`Delete "${task.title}"?\ny/n? `, answer =>
+            (answer === 'y' && taskdb.delete(id, { archive }), resolve())))
 }
 
 /* eslint-disable max-len */
