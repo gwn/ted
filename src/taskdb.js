@@ -3,7 +3,19 @@ const path = require('path')
 const { pick, uniq, flatten } = require('./util')
 
 
+const dbDirSkeleton = [
+    { path: '.', dir: true },
+    { path: './counter', initial: '0' },
+    { path: './index', initial: '{}' },
+    { path: './archive', dir: true },
+    { path: './archive/index', initial: '{}' },
+]
+
+
 const makeTaskDB = dbroot => {
+    if (fs.existsSync(dbroot) && !checkIfDbDir(dbroot))
+        return false
+
     generateSkeleton(dbroot)
 
     return {
@@ -20,23 +32,19 @@ const makeTaskDB = dbroot => {
     }
 }
 
-const generateSkeleton = dbroot => {
-    [
-        { path: '.', dir: true },
-        { path: './counter', initial: '0' },
-        { path: './index', initial: '{}' },
-        { path: './archive', dir: true },
-        { path: './archive/index', initial: '{}' },
-    ]
-        .forEach(file => {
-            const fullPath = path.join(dbroot, file.path)
+const checkIfDbDir = dbroot =>
+    dbDirSkeleton.every(file => fs.existsSync(file.path))
 
-            if (!fs.existsSync(fullPath))
-                if (file.dir)
-                    fs.mkdirSync(fullPath)
-                else
-                    fs.writeFileSync(fullPath, file.initial)
-        })
+const generateSkeleton = dbroot => {
+    dbDirSkeleton.forEach(file => {
+        const fullPath = path.join(dbroot, file.path)
+
+        if (!fs.existsSync(fullPath))
+            if (file.dir)
+                fs.mkdirSync(fullPath)
+            else
+                fs.writeFileSync(fullPath, file.initial)
+    })
 }
 
 const create = (dbroot, recordOrText, opts = {}) => {

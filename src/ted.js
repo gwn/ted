@@ -44,6 +44,11 @@ const main = () => {
 
     const ctx = makeCtx(dbpath)
 
+    if (!ctx.taskdb) {
+        err('Invalid task dir!')
+        return process.exit(2)
+    }
+
     prompt(ctx)
 }
 
