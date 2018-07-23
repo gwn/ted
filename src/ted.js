@@ -116,11 +116,16 @@ const view = (ctx, id) => {
 }
 
 const f = (ctx, type, ...params) => {
+    const filterTypes = { '&': 'all', '|': 'any', '/': 'match' }
+
     if (!type)
         return log(ctx.filter.type, ctx.filter.params.join(' '))
 
-    if (['all', 'any', 'match'].includes(type))
-        ctx.filter = { type, params }
+    if (Object.keys(filterTypes).includes(type))
+        ctx.filter = {
+            type: filterTypes[type],
+            params,
+        }
     else
         err('Bad filter!')
 }
