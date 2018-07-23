@@ -119,7 +119,7 @@ const f = (ctx, type, ...params) => {
     if (!type)
         return log(ctx.filter.type, ctx.filter.params.join(' '))
 
-    if (['all', 'any', 'match'].includes(ctx.filter.type))
+    if (['all', 'any', 'match'].includes(type))
         ctx.filter = { type, params }
     else
         err('Bad filter!')
