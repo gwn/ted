@@ -1,6 +1,6 @@
 {
   "name": "ted-editor",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "Lightweight ergonomic interactive command line task editor",
   "author": "gwn <ege@ege.wtf>",
   "keywords": [
