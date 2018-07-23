@@ -95,7 +95,7 @@ const filterTask = (filter, task) => {
         return filter.params.some(tag => task.tags.includes(tag))
 
     case 'match':
-        return (new RegExp(filter.params[0], 'i')).test(task.title)
+        return (new RegExp(filter.params[0], 'iu')).test(task.title)
 
     default:
         return true
