@@ -33,7 +33,7 @@ managers.
 
 - `ted` is interactive. Commands are sent from inside the `ted`
   shell. You don't have to repeat the `ted` command every time.
-  There is no non-interactive mode as `ted` is intented to be used
+  There is no non-interactive mode as `ted` is intended to be used
   directly by its end power-users all the time and not by scripts.
 
 - `ted` is stateful. It remembers the filter, order and limit you
