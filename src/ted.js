@@ -145,7 +145,10 @@ const parseFilter = rawFilter => {
     }
 }
 
-const F = ctx => ( ctx.filter = defaultListOpts.filter )
+const F = ctx => {
+    ctx.filter = defaultListOpts.filter
+    ctx.rawFilter = defaultListOpts.rawFilter
+}
 
 const o = (ctx, ...orderExprs) => {
     if (!orderExprs.length)
@@ -162,7 +165,10 @@ const parseOrder = rawOrder =>
             { direction: 'asc', colName: expr }
     )
 
-const O = ctx => ( ctx.order = defaultListOpts.order )
+const O = ctx => {
+    ctx.order = defaultListOpts.order
+    ctx.rawOrder = defaultListOpts.rawOrder
+}
 
 const l = (ctx, limit) => {
     if (!limit)
