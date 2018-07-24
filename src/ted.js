@@ -248,9 +248,9 @@ const h = () => log(`
     <empty>               List tasks that match the current filter
     <id>                  Show task #<id>
     f                     Show current filter
-    f all <t1> [<t2> ..]  Set filter for all matching tags
-    f any <t1> [<t2> ..]  Set filter for any matching tag
-    f match <regex>       Set filter for given regex
+    f & <t1> [<t2> ..]    Set filter for all matching tags
+    f | <t1> [<t2> ..]    Set filter for any matching tag
+    f / <regex>           Set filter for given regex
     F                     Reset filter
     o                     Show current order
     o <col1> [<col2> ..]  Set column(s) to order the list by. Prefix column names with "-" for descending order
