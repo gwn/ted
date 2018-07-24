@@ -103,7 +103,7 @@ const filterTask = (filter, task) => {
 }
 
 const sortTaskEntries = (order, [id1, task1], [id2, task2]) => {
-    const numericFields = ['pri']
+    const numericFields = ['id', 'pri']
     let i, len, task1Val, task2Val, modifierFn
 
     for (i = 0, len = order.length; i < len; ++i) {
