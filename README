@@ -32,11 +32,19 @@ managers.
   changes.
 
 - `ted` is interactive. Commands are sent from inside the `ted`
-  shell.
+  shell. You don't have to repeat the `ted` command every time.
+  There is no non-interactive mode as `ted` is intented to be used
+  directly by its end power-users all the time and not by scripts.
+
+- `ted` is stateful. It remembers the filter, order and limit you
+  set so you don't type them again and again.
 
 - All commands are single letter but intuitive (like c for create,
   e for edit, etc). You need A LOT less keystrokes to accomplish
   things compared to many other command line task managers.
+
+- `ted` is not tightly coupled to any version control or
+  synchronization system.
 
 - `ted` is similar to the venerable UNIX editor `ed` (which is THE
   standard editor). This only appeals to UNIX geeks though.
@@ -47,22 +55,22 @@ managers.
 Things that are intentionally not supported and suggested
 alternatives:
 
-- Attribution & synchronization: Use a VCS on the task directory
+- Attribution & synchronization: Use a VCS
 
 - Assignments: Use tags like `@john`, `@jack`
 
-- Statuses: Use tags like `!doing`, `!blocked`
+- Statuses: Use tags like `!doing`, `!rejected`, `!blocked`
 
 - Attachments: Link to files on the cloud
 
 - Discussions, mentions, merge requests: Use e-mail lists, e-mail,
-  patches on e-mail. E-mail FTW!
+  patches over e-mail
 
 
 ## usage
 
     npm install -g ted-editor
-    ted mytodos
+    ted myissues
 
 
 ## commands
@@ -76,7 +84,7 @@ alternatives:
     o                     Show current order
     l                     Show current limit
 
-**Listing option manipulation:**
+**Modify filter order limit:**
 
     f all <t1> [<t2> ..]  Set filter for all matching tags
     f any <t1> [<t2> ..]  Set filter for any matching tag
@@ -89,7 +97,7 @@ alternatives:
     l <lim>               Set limit
     L                     Reset limit
 
-**Task manipulation:**
+**Manipulate task:**
 
     c                     Create new task with system editor
     c <title>             Create new task immediately with the given title
