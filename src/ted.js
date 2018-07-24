@@ -22,7 +22,7 @@ const defaultListOpts = {
             colName: 'pri',
         },
     ],
-    limit: 20,
+    limit: 10,
     rawFilter: '',
     rawOrder: '-pri',
 }
