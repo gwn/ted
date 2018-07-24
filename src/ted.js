@@ -23,6 +23,8 @@ const defaultListOpts = {
         },
     ],
     limit: 20,
+    rawFilter: '',
+    rawOrder: '-pri',
 }
 
 
@@ -32,6 +34,8 @@ const makeCtx = dbroot => ({
     filter: defaultListOpts.filter,
     order: defaultListOpts.order,
     limit: defaultListOpts.limit,
+    rawFilter: defaultListOpts.rawFilter,
+    rawOrder: defaultListOpts.rawOrder,
 })
 
 const main = () => {
@@ -115,39 +119,48 @@ const view = (ctx, id) => {
     log(taskdb.read(id, { raw: true, archive }))
 }
 
-const f = (ctx, type, ...params) => {
-    const filterTypes = { '&': 'all', '|': 'any', '/': 'match' }
+const f = (ctx, filterSymbol, ...params) => {
+    if (!filterSymbol)
+        return log(ctx.rawFilter)
 
-    if (!type)
-        return log(ctx.filter.type, ctx.filter.params.join(' '))
-
-    if (Object.keys(filterTypes).includes(type))
-        ctx.filter = {
-            type: filterTypes[type],
-            params,
-        }
-    else
+    if (['&', '|', '/'].includes(filterSymbol)) {
+        ctx.rawFilter = [filterSymbol, ...params].join(' ')
+        ctx.filter = parseFilter(ctx.rawFilter)
+    } else
         err('Bad filter!')
+}
+
+const parseFilter = rawFilter => {
+    const [filterSymbol, ...params] = rawFilter.split(' ')
+
+    const filterSymbolsToNames = {
+        '&': 'all',
+        '|': 'any',
+        '/': 'match',
+    }
+
+    return {
+        type: filterSymbolsToNames[filterSymbol],
+        params,
+    }
 }
 
 const F = ctx => ( ctx.filter = defaultListOpts.filter )
 
 const o = (ctx, ...orderExprs) => {
     if (!orderExprs.length)
-        return log(
-            ctx.order
-                .map(oItem =>
-                    (oItem.direction === 'desc' ? '-' : '') + oItem.colName)
-                .join(' ')
-        )
+        return log(ctx.rawOrder)
 
-    ctx.order = 
-        orderExprs.map(expr =>
-            expr[0] === '-' ?
-                { direction: 'desc', colName: expr.slice(1) } :
-                { direction: 'asc', colName: expr }
-        )
+    ctx.rawOrder = orderExprs.join(' ')
+    ctx.order = parseOrder(ctx.rawOrder)
 }
+
+const parseOrder = rawOrder =>
+    rawOrder.split(' ').map(expr =>
+        expr[0] === '-' ?
+            { direction: 'desc', colName: expr.slice(1) } :
+            { direction: 'asc', colName: expr }
+    )
 
 const O = ctx => ( ctx.order = defaultListOpts.order )
 
