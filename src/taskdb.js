@@ -236,6 +236,7 @@ const applyPatch = (patch, task) => ({
 
     tags:
         (task.tags || []).concat(patch.tags || [])
+            .filter((elem, idx, arr) => idx == arr.indexOf(elem)) // deduplicate
             .filter(t => !(patch.detags || []).includes(t)),
 
     description: patch.description || task.description,
