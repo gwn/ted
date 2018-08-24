@@ -215,7 +215,9 @@ const reindex = dbroot =>
             const newIndex =
                 fs.readdirSync(root)
                     .filter(fName =>
-                        !['index', 'counter', 'archive'].includes(fName))
+                        !['index', 'counter', 'archive'].includes(fName) &&
+                        fName[0] !== '.'
+                    )
                     .map(fName => ({
                         id: fName,
                         task: parseTask(
