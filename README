@@ -135,8 +135,35 @@ alternatives:
     - in the description
 
 
-## gotchas
+## on indexing
 
-- If you update your task files with something other than `ted`;
-  you will need to update the internal index of `ted` when you
-  return to it. Use the `reindex` command for that.
+`ted` represents your tasks as simple files on the filesystem; but
+it doesn't read each file every time you send a list command;
+instead it lists them from an index file that it keeps track of.
+
+This means that `ted` updates the index every time you add, update
+or delete a task.
+
+If the index is corrupted; `ted` will probably misbehave, crash
+even.
+
+If you suspect that the index is corrupted for any reason, you
+should use the `reindex` command to rebuild the index.
+
+Here are the most common scenarios that result in index
+corruption:
+
+- You update your task files with something other than `ted`. If
+  you choose to do this (which is ok) you should open your task
+  directory with `ted` after your updates and reindex.
+
+- You keep track of your tasks with a VCS and you make a
+  non-fast-forward merge which results in a conflict within the
+  index. Resolve the conflict by following the steps below:
+
+  - Open the index file
+  - Choose any one of the index lines (doesn't matter) and remove
+    the other
+  - Save and close the file
+  - Open the task directory with `ted`
+  - Reindex
