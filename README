@@ -1,5 +1,7 @@
 ## ted
 
+Ted is the standard task editor :P
+
 Lightweight ergonomic interactive command line task list editor
 
 [`ed`](http://wiki.c2.com/?EdIsTheStandardTextEditor) for tasks
@@ -17,7 +19,7 @@ managers.
 
 - `ted` is an editor that works on a given task directory. It has
   no implicit project database. The "project" IS the directory you
-  supply.
+  supply. It works like git in this sense.
 
 - `ted` supports tag based categorization & filtering and priority
   based ordering.
@@ -36,8 +38,8 @@ managers.
   There is no non-interactive mode as `ted` is intended to be used
   directly by its end power-users all the time and not by scripts.
 
-- `ted` is stateful. It remembers the filter, order and limit you
-  set so you don't type them again and again.
+- `ted` is intentionally stateful. It remembers the filter, order
+  and limit you set so you don't type them again and again.
 
 - All commands are single letter but intuitive (like c for create,
   e for edit, etc). You need A LOT less keystrokes to accomplish
@@ -47,7 +49,8 @@ managers.
   synchronization system.
 
 - `ted` is similar to the venerable UNIX editor `ed` (which is THE
-  standard editor). This only appeals to UNIX geeks though.
+  standard editor). This "feature" only appeals to UNIX geeks
+  though.
 
 
 ## non-features
@@ -63,8 +66,8 @@ alternatives:
 
 - Attachments: Link to files on the cloud
 
-- Discussions, mentions, merge requests: Use e-mail lists, e-mail,
-  patches over e-mail
+- Discussions, mentions, merge requests: Use email lists, email,
+  patches over email. I mean, what was wrong with email?
 
 
 ## usage
@@ -84,7 +87,7 @@ alternatives:
     o                     Show current order
     l                     Show current limit
 
-**Modify filter order limit:**
+**Filter order limit:**
 
     f & <t1> [<t2> ..]  Set filter for all matching tags
     f | <t1> [<t2> ..]  Set filter for any matching tag
@@ -113,8 +116,8 @@ alternatives:
 
 **Other:**
 
-    a                     Start working on archived tasks
-    A                     Stop working on archived tasks
+    a                     Switch to the archives
+    A                     Switch back from the archives
     h                     Help
     q                     Quit
     reindex               Update the internal index. Call after manual updates
@@ -155,11 +158,11 @@ corruption:
 
 - You update your task files with something other than `ted`. If
   you choose to do this (which is ok) you should open your task
-  directory with `ted` after your updates and reindex.
+  directory with `ted` after your updates and trigger a `reindex`.
 
 - You keep track of your tasks with a VCS and you make a
-  non-fast-forward merge which results in a conflict within the
-  index. Resolve the conflict by following the steps below:
+  merge which results in a conflict within the index. Resolve the
+  conflict by following the steps below:
 
   - Open the index file
   - Choose any one of the index lines (doesn't matter) and remove
@@ -167,3 +170,7 @@ corruption:
   - Save and close the file
   - Open the task directory with `ted`
   - Reindex
+
+This is the only thing that can go wrong when working
+collaboratively, and for which the straightforward fix is
+available.
