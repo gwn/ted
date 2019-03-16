@@ -73,8 +73,8 @@ alternatives:
 
 ## known issues
 
-- Written in Node. A C or Rust version would probably be better.
-  Any volunteers for porting?
+- Written in Javascript. A C or Rust version would probably be
+  better. Any volunteers for porting?
 
 - Not written with performance in mind, for now. Especially the
   indexing mechanism is very inefficient. That'll be addressed
