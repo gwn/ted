@@ -57,6 +57,19 @@ const editorPrompt = initial => {
     return content
 }
 
+const serialize = taskMap => [
+    '{\n',
+    Object.entries(taskMap)
+        .map(([taskNo, taskContent]) =>
+            '"' + taskNo + '":' + JSON.stringify(taskContent)
+        )
+        .join(',\n'),
+    '\n}\n',
+]
+    .join('')
+
+const deserialize = JSON.parse
+
 module.exports = {
     log,
     err,
@@ -66,4 +79,6 @@ module.exports = {
     uniq,
     column,
     editorPrompt,
+    serialize,
+    deserialize,
 }

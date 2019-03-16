@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { pick, uniq, flatten } = require('./util')
+const { pick, uniq, flatten, serialize, deserialize } = require('./util')
 
 
 const dbDirSkeleton = [
@@ -186,7 +186,7 @@ const getIndex = (dbroot, opts) => {
     const root = archive ? path.join(dbroot, 'archive') : dbroot
     const indexFile = path.join(root, 'index')
 
-    return JSON.parse(fs.readFileSync(indexFile))
+    return deserialize(fs.readFileSync(indexFile))
 }
 
 const setIndex = (dbroot, id, task, opts) => {
@@ -194,14 +194,14 @@ const setIndex = (dbroot, id, task, opts) => {
     const root = archive ? path.join(dbroot, 'archive') : dbroot
     const indexFile = path.join(root, 'index')
 
-    const index = JSON.parse(fs.readFileSync(indexFile))
+    const index = deserialize(fs.readFileSync(indexFile))
 
     if (!del)
         index[id] = makeIndexRecord(task)
     else
         delete index[id]
 
-    fs.writeFileSync(indexFile, JSON.stringify(index))
+    fs.writeFileSync(indexFile, serialize(index, null, ' '))
 }
 
 const delIndex = (dbroot, id, opts) =>
@@ -228,7 +228,7 @@ const reindex = dbroot =>
                         [id]: makeIndexRecord(task),
                     }), {})
 
-            fs.writeFileSync(indexFile, JSON.stringify(newIndex))
+            fs.writeFileSync(indexFile, serialize(newIndex, null, ' '))
         })
 
 const applyPatch = (patch, task) => ({
