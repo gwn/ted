@@ -131,7 +131,7 @@ alternatives:
     A                     Switch back from the archives
     h                     Help
     q                     Quit
-    reindex               Update the internal index. Call after manual updates
+    reindex               Update the internal index. Trigger after manual updates
 
 
 ## task file format
