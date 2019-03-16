@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
 const readline = require('readline')
-const { log, err, isNumeric, column, editorPrompt } = require('./util')
-const { makeTaskDB } = require('./taskdb')
+const {log, err, isNumeric, column, editorPrompt} = require('./util')
+const makeTaskDB = require('./taskdb')
 
 const PROMPTSTR = '> '
 
@@ -57,7 +57,7 @@ const main = () => {
 }
 
 const prompt = ctx => {
-    const { archive } = ctx
+    const {archive} = ctx
     const promptStr = '\n' + (archive ? 'a' : '') + PROMPTSTR
 
     rl.question(promptStr, cmd => {
@@ -71,7 +71,7 @@ const prompt = ctx => {
 }
 
 const handleCmd = (ctx, rawCmd) => {
-    const { actionName, args } = parseCmd(rawCmd)
+    const {actionName, args} = parseCmd(rawCmd)
 
     const actionMap = {
         list, view, t, f, F, o, O, l, L, c, e, p, a, A, d, h, q, reindex,
@@ -79,44 +79,44 @@ const handleCmd = (ctx, rawCmd) => {
 
     const action = actionMap[actionName]
 
-    if (action)
-        return action(ctx, ...args)
-    else
-        return h()
+    return action ? action(ctx, ...args) : h()
 }
 
 const parseCmd = rawCmd => {
     const [actionName, ...args] = rawCmd.split(' ')
 
     if (actionName === '')
-        return { actionName: 'list', args: [] }
+        return {actionName: 'list', args: []}
 
     if (isNumeric(actionName))
-        return { actionName: 'view', args: [actionName] }
+        return {actionName: 'view', args: [actionName]}
 
     // `list` and `view` are exceptions as their command names
     // does not correspond to their function names.
 
-    return { actionName, args }
+    return {actionName, args}
 }
 
 const list = ctx => {
-    const { taskdb, filter, order, limit, archive } = ctx
+    const {taskdb, filter, order, limit, archive} = ctx
 
     const tasks =
-        taskdb.list({ filter, order, limit, archive })
-            .map(task => (task.tags = task.tags.join(' '), task))
+        taskdb.list({filter, order, limit, archive})
+            .map(task => ({
+                ...task,
+                tags: task.tags.join(' '),
+            }))
 
     log(column(tasks).trimRight('\n'))
 }
 
 const view = (ctx, id) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
 
-    if (!taskdb.exists(id, { archive }))
+    if (!taskdb.exists(id, {archive}))
         log('No such task!')
 
-    log(taskdb.read(id, { raw: true, archive }))
+    log(taskdb.read(id, {raw: true, archive}))
 }
 
 const f = (ctx, filterSymbol, ...params) => {
@@ -180,10 +180,10 @@ const l = (ctx, limit) => {
         err('Bad limit!')
 }
 
-const L = ctx => ( ctx.limit = defaultListOpts.limit )
+const L = ctx => (ctx.limit = defaultListOpts.limit)
 
 const c = (ctx, ...words) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
     const title = words.join(' ')
     let taskId
 
@@ -198,27 +198,27 @@ const c = (ctx, ...words) => {
     else
         taskId = taskdb.create(
             editorPrompt('No title\n\n5\n\nNo description'),
-            { raw: true, archive }
+            {raw: true, archive}
         )
 
     log(taskId)
 }
 
 const e = (ctx, id) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
 
-    if (!taskdb.exists(id, { archive }))
+    if (!taskdb.exists(id, {archive}))
         return log('No such task!')
 
     taskdb.update(
         id,
-        editorPrompt(taskdb.read(id, { raw: true })),
-        { raw: true, archive }
+        editorPrompt(taskdb.read(id, {raw: true})),
+        {raw: true, archive}
     )
 }
 
 const t = (ctx, id, ...tagExprs) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
 
     if (!id)
         return log(taskdb.listTags().join('\n'))
@@ -227,39 +227,45 @@ const t = (ctx, id, ...tagExprs) => {
     const tags = tagExprs.filter(e => !isDetag(e))
     const detags = tagExprs.filter(isDetag).map(t => t.slice(1))
 
-    if (!taskdb.exists(id, { archive }))
+    if (!taskdb.exists(id, {archive}))
         return log('No such task!')
 
-    taskdb.update(id, { tags, detags }, { archive })
+    taskdb.update(id, {tags, detags}, {archive})
 }
 
 const p = (ctx, id, newPri) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
 
-    if (!taskdb.exists(id, { archive }))
+    if (!taskdb.exists(id, {archive}))
         return log('No such task!')
 
-    taskdb.update(id, { pri: newPri }, { archive })
+    taskdb.update(id, {pri: newPri}, {archive})
 }
 
-const a = (ctx, id) => id ? ctx.taskdb.archive(id) : toggleArchive(ctx, true)
+const a = (ctx, id) =>
+    id
+        ? ctx.taskdb.archive(id)
+        : toggleArchive(ctx, true)
 
-const A = (ctx, id) => id ? ctx.taskdb.unarchive(id) : toggleArchive(ctx, false)
+const A = (ctx, id) =>
+    id
+        ? ctx.taskdb.unarchive(id)
+        : toggleArchive(ctx, false)
 
 const toggleArchive = (ctx, archive = null) =>
     ctx.archive = archive === null ? !ctx.archive : archive
 
 const d = (ctx, id) => {
-    const { taskdb, archive } = ctx
+    const {taskdb, archive} = ctx
 
-    if (!taskdb.exists(id, { archive }))
+    if (!taskdb.exists(id, {archive}))
         return log('No such task!')
 
-    const task = taskdb.read(id, { archive })
+    const task = taskdb.read(id, {archive})
 
     return new Promise(resolve =>
         rl.question(`Delete "${task.title}"?\ny/n? `, answer =>
-            (answer === 'y' && taskdb.delete(id, { archive }), resolve())))
+            (answer === 'y' && taskdb.delete(id, {archive}), resolve())))
 }
 
 /* eslint-disable max-len */

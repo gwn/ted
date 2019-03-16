@@ -1,14 +1,14 @@
 const fs = require('fs')
 const path = require('path')
-const { pick, uniq, flatten, serialize, deserialize } = require('./util')
+const {pick, uniq, flatten, serialize, deserialize} = require('./util')
 
 
 const dbDirSkeleton = [
-    { path: '.', dir: true },
-    { path: './counter', initial: '0' },
-    { path: './index', initial: '{}' },
-    { path: './archive', dir: true },
-    { path: './archive/index', initial: '{}' },
+    {path: '.', dir: true},
+    {path: './counter', initial: '0'},
+    {path: './index', initial: '{}'},
+    {path: './archive', dir: true},
+    {path: './archive/index', initial: '{}'},
 ]
 
 
@@ -56,7 +56,7 @@ const create = (dbroot, recordOrText, opts = {}) => {
 }
 
 const read = (dbroot, id, opts = {}) => {
-    const { archive = false, raw = false } = opts
+    const {archive = false, raw = false} = opts
 
     const taskRoot = archive ? path.join(dbroot, 'archive') : dbroot
     const taskFileName = path.join(taskRoot, String(id))
@@ -64,7 +64,7 @@ const read = (dbroot, id, opts = {}) => {
 
     return raw ?
         taskContent:
-        Object.assign({ id }, parseTask(taskContent))
+        Object.assign({id}, parseTask(taskContent))
 }
 
 const list = (dbroot, opts = {}) => {
@@ -82,7 +82,7 @@ const list = (dbroot, opts = {}) => {
             .filter(([id, task]) => filterTask(filter, task))
             .sort(sortTaskEntries.bind(null, order))
             .slice(0, limit)
-            .map(([id, task]) => Object.assign({ id }, task))
+            .map(([id, task]) => Object.assign({id}, task))
     )
 }
 
@@ -129,7 +129,7 @@ const sortTaskEntries = (order, [id1, task1], [id2, task2]) => {
 const listTags = dbroot => uniq(flatten(list(dbroot).map(t => t.tags)))
 
 const update = (dbroot, id, patchOrText, opts = {}) => {
-    const { archive = false, raw = false } = opts
+    const {archive = false, raw = false} = opts
 
     const taskRoot = archive ? path.join(dbroot, 'archive') : dbroot
     const fileName = path.join(taskRoot, String(id))
@@ -137,32 +137,32 @@ const update = (dbroot, id, patchOrText, opts = {}) => {
     const patch = raw ? parseTask(patchOrText) : patchOrText
 
     const task =
-        exists(dbroot, id, { archive }) ?
-            read(dbroot, id, { archive }) :
+        exists(dbroot, id, {archive}) ?
+            read(dbroot, id, {archive}) :
             {}
 
     const patchedTask = applyPatch(patch, task)
 
-    setIndex(dbroot, id, patchedTask, { archive })
+    setIndex(dbroot, id, patchedTask, {archive})
 
     fs.writeFileSync(fileName, buildTask(patchedTask))
 }
 
 const delete_ = (dbroot, id, opts = {}) => {
-    const { archive = false } = opts
+    const {archive = false} = opts
 
     const taskRoot = archive ? path.join(dbroot, 'archive') : dbroot
     const fileName = path.join(taskRoot, String(id))
 
-    delIndex(dbroot, id, { archive })
+    delIndex(dbroot, id, {archive})
 
     fs.unlinkSync(fileName)
 }
 
 const exists = (dbroot, id, opts = {}) => {
-    const { archive = false } = opts
+    const {archive = false} = opts
 
-    return id in getIndex(dbroot, { archive })
+    return id in getIndex(dbroot, {archive})
 }
 
 const archive = (dbroot, id) => toggleArchive(dbroot, id, true)
@@ -170,13 +170,13 @@ const archive = (dbroot, id) => toggleArchive(dbroot, id, true)
 const unarchive = (dbroot, id) => toggleArchive(dbroot, id, false)
 
 const toggleArchive = (dbroot, id, archive) => {
-    if (!exists(dbroot, id, { archive: !archive }))
+    if (!exists(dbroot, id, {archive: !archive}))
         return false
 
-    const task = read(dbroot, id, { archive: !archive })
+    const task = read(dbroot, id, {archive: !archive})
 
-    delete_(dbroot, id, { archive: !archive })
-    update(dbroot, id, task, { archive })
+    delete_(dbroot, id, {archive: !archive})
+    update(dbroot, id, task, {archive})
 }
 
 const makeIndexRecord = task => pick(['title', 'pri', 'tags'], task)
@@ -190,7 +190,7 @@ const getIndex = (dbroot, opts) => {
 }
 
 const setIndex = (dbroot, id, task, opts) => {
-    const { archive = false, del = false } = opts
+    const {archive = false, del = false} = opts
     const root = archive ? path.join(dbroot, 'archive') : dbroot
     const indexFile = path.join(root, 'index')
 
@@ -205,7 +205,7 @@ const setIndex = (dbroot, id, task, opts) => {
 }
 
 const delIndex = (dbroot, id, opts) =>
-    setIndex(dbroot, id, null, Object.assign({ del: true }, opts))
+    setIndex(dbroot, id, null, Object.assign({del: true}, opts))
 
 const reindex = dbroot =>
     [dbroot, path.join(dbroot, 'archive')]
@@ -256,11 +256,11 @@ const parseTask = taskContent => {
 
     const description = descriptionParagraphs.join('\n\n')
 
-    return { title, pri, tags, description }
+    return {title, pri, tags, description}
 }
 
 const buildTask = taskAttrs => {
-    const { title, pri, tags, description } = taskAttrs
+    const {title, pri, tags, description} = taskAttrs
 
     return (
         title +
@@ -281,4 +281,4 @@ const getNextId = dbroot => {
 }
 
 
-module.exports = { makeTaskDB }
+module.exports = makeTaskDB
