@@ -138,7 +138,7 @@ alternatives:
 
     title
 
-    priority tag1 tag2 tag3
+    priority tag1 tag2 tag3 ...
 
     all lines starting with this one are considered the task
     description.
