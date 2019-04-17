@@ -79,7 +79,7 @@ const list = (dbroot, opts = {}) => {
 
     return (
         Object.entries(index)
-            .filter(([id, task]) => filterTask(filter, task))
+            .filter(([, task]) => filterTask(filter, task))
             .sort(sortTaskEntries.bind(null, order))
             .slice(0, limit)
             .map(([id, task]) => Object.assign({id}, task))

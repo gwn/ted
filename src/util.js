@@ -17,7 +17,7 @@ const isNumeric = numStr => {
 
 const pick = (keys, obj) =>
     Object.entries(obj)
-        .filter(([key, val]) => keys.includes(key))
+        .filter(([key]) => keys.includes(key))
         .reduce((newObj, [key, val]) => (newObj[key] = val, newObj), {})
 
 const flatten = arr => arr.reduce((acc, a) => acc.concat(a), [])
