@@ -20,7 +20,7 @@ const pick = (keys, obj) =>
         .filter(([key, val]) => keys.includes(key))
         .reduce((newObj, [key, val]) => (newObj[key] = val, newObj), {})
 
-const flatten = arr => arr.reduce((acc, a) => acc.concat(a))
+const flatten = arr => arr.reduce((acc, a) => acc.concat(a), [])
 // shallow
 
 const uniq = arr => ([...new Set(arr)])
