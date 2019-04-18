@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const readline = require('readline')
-const {log, err, isNumeric, column, editorPrompt} = require('./util')
+const {log, err, isNumeric, columnarize, editorPrompt} = require('./util')
 const makeTaskDB = require('./taskdb')
 
 const PROMPTSTR = '> '
@@ -99,15 +99,23 @@ const parseCmd = rawCmd => {
 
 const list = ctx => {
     const {taskdb, filter, order, limit, archive} = ctx
-
     const tasks =
         taskdb.list({filter, order, limit, archive})
-            .map(task => ({
-                ...task,
-                tags: task.tags.join(' '),
-            }))
+            .map(task => [
+                task.id,
+                task.title,
+                task.pri,
+                task.tags.join(' '),
+            ])
 
-    log(column(tasks).trimRight('\n'))
+    const columnarized = columnarize(tasks)
+
+    const stringified =
+        columnarized
+            .map(task => task.join('  '))
+            .join('\n')
+
+    log(stringified)
 }
 
 const view = (ctx, id) => {

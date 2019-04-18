@@ -25,17 +25,19 @@ const flatten = arr => arr.reduce((acc, a) => acc.concat(a), [])
 
 const uniq = arr => ([...new Set(arr)])
 
-// Wrapper for UNIX command `column`
-const column = collection => {
-    const input =
-        collection
-            .map(rec => Object.values(rec).join('\t'))
-            .join('\n')
+// :: [[String]] -> [[String]]
+const columnarize = collection => {
+    const colWidths = collection.reduce(
+        (accum, rec) =>
+            rec.map((val, idx) =>
+                Math.max(String(val).length, accum[idx] || 0)),
+        []
+    )
 
-    const response =
-        spawnSync('column', ['-t', '-s', '"\t"'], { input })
-
-    return response.stdout.toString()
+    return collection.map(rec =>
+        rec.map((val, idx) =>
+            String(val).padEnd(colWidths[idx]))
+    )
 }
 
 const editorPrompt = initial => {
@@ -77,7 +79,7 @@ module.exports = {
     pick,
     flatten,
     uniq,
-    column,
+    columnarize,
     editorPrompt,
     serialize,
     deserialize,
