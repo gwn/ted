@@ -19,9 +19,8 @@ managers.
 
 `ted` ..
 
-- is an editor that works on a given task directory. It has no
-  implicit project database. The "project" IS the directory you
-  supply. It works like git in this sense.
+- is an editor that works on a given directory. It has no implicit
+  project database.
 
 - supports tag based categorization & filtering and priority based
   ordering.
@@ -51,7 +50,7 @@ managers.
   system.
 
 - is similar to the venerable UNIX editor `ed` (which is THE
-  standard editor).
+  standard editor) in some ways.
 
 
 ## non-features
@@ -70,11 +69,15 @@ alternatives:
 - Discussions, mentions, merge requests: Use email lists, email,
   patches over email. I mean, what was wrong with email?
 
+- Reporting and fancy charts: Use your UNIX-fu to parse the
+  indexes and pipe them to GGPlot or something. Or maybe switch to
+  [Taskwarrior](https://taskwarrior.org) if you really need this.
+
 
 ## known issues
 
-- Written in Javascript. A C or Rust version would probably be
-  better. Any volunteers for porting?
+- Written in Javascript. An implementation in a compiled language
+  would probably be better. Any volunteers for porting?
 
 - Not written with performance in mind, for now. Especially the
   indexing mechanism is very inefficient. That'll be addressed
