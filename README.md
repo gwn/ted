@@ -37,7 +37,7 @@ managers.
 - is interactive. Commands are sent from inside the `ted` shell.
   You don't have to repeat the `ted` command every time. There is
   no non-interactive mode as `ted` is intended to be used directly
-  by its end power-users all the time and not by scripts.
+  by its human users and not by scripts.
 
 - is intentionally stateful. It remembers the filter, order and
   limit you set so you don't type them again and again.
@@ -49,8 +49,8 @@ managers.
 - is not tightly coupled to any version control or synchronization
   system.
 
-- is similar to the venerable UNIX editor `ed` (which is THE
-  standard editor) in some ways.
+- is similar in some ways to the venerable UNIX editor `ed` (which
+  is THE standard editor).
 
 
 ## non-features
@@ -71,7 +71,8 @@ alternatives:
 
 - Reporting and fancy charts: Use your UNIX-fu to parse the
   indexes and pipe them to GGPlot or something. Or maybe switch to
-  [Taskwarrior](https://taskwarrior.org) if you really need this.
+  [Taskwarrior](https://taskwarrior.org) if you really need this
+  out of the box.
 
 
 ## usage
@@ -95,7 +96,8 @@ those commands will fail. Please define it in your ~/.profile or
 ## known issues
 
 - Written in Javascript. An implementation in a compiled language
-  would probably be better. Any volunteers for porting?
+  would probably be better. C? Haskell? Any volunteers for
+  porting?
 
 - Not written with performance in mind, for now. Especially the
   indexing mechanism is very inefficient. That'll be addressed
