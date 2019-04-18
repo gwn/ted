@@ -151,3 +151,11 @@ alternatives:
     - paul
     - george
     - ringo
+
+## index file format
+
+    {
+    "1":{"title":"lorem ipsum","pri":"5","tags":["test"]},
+    "2":{"title":"dolor sit amet","pri":"9","tags":[]},
+    ...
+    }
