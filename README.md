@@ -74,6 +74,24 @@ alternatives:
   [Taskwarrior](https://taskwarrior.org) if you really need this.
 
 
+## usage
+
+    npm install -g ted-editor
+    ted myissues
+
+[![asciicast](https://asciinema.org/a/241697.svg)](https://asciinema.org/a/241697)
+
+
+## gotchas
+
+Some commands try to open task files with the system editor. If
+you don't have an EDITOR variable defined in your environment,
+those commands will fail. Please define it in your ~/.profile or
+~/.bashrc or whatever:
+
+    EDITOR=vi  # or "sublime" or "code" or whatever
+
+
 ## known issues
 
 - Written in Javascript. An implementation in a compiled language
@@ -82,12 +100,6 @@ alternatives:
 - Not written with performance in mind, for now. Especially the
   indexing mechanism is very inefficient. That'll be addressed
   sooner or later.
-
-
-## usage
-
-    npm install -g ted-editor
-    ted myissues
 
 
 ## commands
