@@ -13,7 +13,12 @@ const dbDirSkeleton = [
 
 
 const makeTaskDB = dbroot => {
-    if (fs.existsSync(dbroot) && !checkIfDbDir(dbroot))
+    if (
+        fs.existsSync(dbroot) && (
+            !checkIfDirectory(dbroot) ||
+            (!checkIfEmpty(dbroot) && !checkIfDbDir(dbroot))
+        )
+    )
         return false
 
     generateSkeleton(dbroot)
@@ -31,6 +36,10 @@ const makeTaskDB = dbroot => {
         reindex: reindex.bind(null, dbroot),
     }
 }
+
+const checkIfDirectory = dbroot => fs.lstatSync(dbroot).isDirectory()
+
+const checkIfEmpty = dbroot => fs.readdirSync(dbroot).length === 0
 
 const checkIfDbDir = dbroot =>
     dbDirSkeleton.every(file => fs.existsSync(path.join(dbroot, file.path)))

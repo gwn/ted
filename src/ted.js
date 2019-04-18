@@ -49,7 +49,10 @@ const main = () => {
     const ctx = makeCtx(dbpath)
 
     if (!ctx.taskdb) {
-        err('Invalid task dir!')
+        err(
+            'Argument must either be an existing task directory, ' +
+            'or an empty directory!'
+        )
         return process.exit(2)
     }
 
